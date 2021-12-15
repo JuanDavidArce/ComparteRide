@@ -21,14 +21,3 @@ class CRideModel(models.Model):
         abstract =True
         get_latest_by ='created'
         ordering = ['-created','-modified']
-
-
-class Person(models.Model):
-    first_name = models.CharField()
-    last_name= models.CharField()
-
-class MyPerson(Person):
-    class Meta:
-        proxy =True
-    def say_hi(name):
-        pass
