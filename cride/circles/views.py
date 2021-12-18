@@ -1,13 +1,41 @@
 """Circles views"""
-# Django
-from django.http import JsonResponse
-
+# Django REST Framework
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 # Models
-from cride.circles.models import Circle
+from cride.circles.models import Circle, circles
 
+@api_view(['GET'])
 def list_circles(request):
     """List circles """
     circles = Circle.objects.filter(is_public=True)
-    data = [circle.name for circle in circles]
 
-    return JsonResponse(data,safe=False)
+    data = [
+            {'name':circle.name,
+            'slug_name':circle.slug_name,
+            'rides_taken':circle.rides_taken,
+            'rides_offered':circle.rides_offered,
+            'members_limit':circle.members_limit,
+            } 
+            for circle in circles
+        ]
+
+    return Response(data)
+
+
+@api_view(['POST'])
+def create_circle(request):
+    """Create circle"""
+    name = request.data['name']
+    slug_name = request.data['slug_name']
+    about = request.data.get('about','')
+
+    circle = Circle.objects.create(name=name,slug_name=slug_name,about=about)
+    data = {'name':circle.name,
+            'slug_name':circle.slug_name,
+            'rides_taken':circle.rides_taken,
+            'rides_offered':circle.rides_offered,
+            'members_limit':circle.members_limit,
+            } 
+    return Response(data)
+
