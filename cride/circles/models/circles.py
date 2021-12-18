@@ -41,7 +41,7 @@ class Circle(CRideModel):
         help_text='Limited ciercles can grow up to a fixed number of members'
     )
 
-    mambers_limit = models.PositiveIntegerField(
+    members_limit = models.PositiveIntegerField(
         default=0,
         help_text='If circle is limited, this will be the limit on the number of members'
     )
