@@ -27,6 +27,7 @@ class UserModelSerializer(serializers.ModelSerializer):
             'phone_number'
         )
 
+
 class UserSignUpSerializer(serializers.Serializer):
     """User SignUp serializer.
     Handle sign up dta validation and user/profile creation"""
@@ -70,11 +71,9 @@ class UserSignUpSerializer(serializers.Serializer):
     def create(self,data):
         """Handle user and prifile creation"""
         data.pop('password_confirmation')
-        user = User.objects.create_user(**data)
-        profile = Profile.objects.create(user=user)
+        user = User.objects.create_user(**data,is_verified=False)
+        Profile.objects.create(user=user)
         return user
-
-
 
 
 class UserLoginSerializer(serializers.Serializer):
@@ -90,6 +89,9 @@ class UserLoginSerializer(serializers.Serializer):
         user= authenticate(username=data['email'],password=data['password'])
         if not user:
             raise serializers.ValidationError('Invalid credentials')
+        
+        if not user.is_verified:
+            raise serializers.ValidationError('Account is not active yet')
         self.context['user']=user
         return data
 
