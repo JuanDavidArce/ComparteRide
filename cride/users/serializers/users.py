@@ -86,6 +86,7 @@ class UserSignUpSerializer(serializers.Serializer):
         content = render_to_string('emails/users/account_verification.html',{'token':verification_token,'user':user})
         msg = EmailMultiAlternatives(subject,content,from_email,[user.email])
         msg.attach_alternative(content,"text/html")
+        msg.send()
 
 
     def gen_verification_token(self,user):
