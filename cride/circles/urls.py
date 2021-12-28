@@ -1,7 +1,6 @@
 """Cirlces URLs"""
 
 # django
-from re import I
 from django.db import router
 from django.urls import path
 from django.urls.conf import include
