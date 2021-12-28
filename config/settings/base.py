@@ -51,8 +51,9 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     'cride.users.apps.UsersAppConfig',
-    'cride.circles.apps.CirclesAppConfig'
-
+    'cride.circles.apps.CirclesAppConfig',
+    'cride.rides.apps.RidesAppConfig',
+    
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
