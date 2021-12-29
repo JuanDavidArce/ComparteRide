@@ -13,9 +13,16 @@ from datetime import timedelta
 from django.utils import timezone
 
 
+# Serializers
+from cride.users.serializers import UserModelSerializer
+
 class RideModelSerializer(serializers.ModelSerializer):
     """Ride model serializer"""
 
+    offered_by = UserModelSerializer(read_only=True)
+    offered_in = serializers.StringRelatedField()
+
+    passengers  = UserModelSerializer(read_only=True,many=True)
     class Meta:
         """Meta class."""
 
@@ -27,6 +34,13 @@ class RideModelSerializer(serializers.ModelSerializer):
             'rating'
         )
     
+    def update(self, instance,data):
+        """Allow updates only before departure date"""
+        now = timezone.now()
+        if instance.departure_date <=now:
+            raise serializers.ValidationError('ongoing rides cnnot be modified')
+        
+        return super(RideModelSerializer,self).update(instance,data)
 
 
 class CreateRideSerializer(serializers.ModelSerializer):
