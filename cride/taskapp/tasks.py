@@ -10,11 +10,12 @@ from django.utils import timezone
 
 # Models
 from cride.users.models import User
+from cride.rides.models import Ride
 from time import sleep
 
 
 # Celery
-from celery.decorators import task
+from celery.decorators import task,periodic_task
 
 
 # Utilities
@@ -51,3 +52,13 @@ def send_confirmation_email(user_pk):
     msg.send()
 
 
+
+@periodic_task(name='disable_finished_rides',run_every=timedelta(minutes=20))
+def disable_finished_rides():
+    """Disable finished rides"""
+    now = timezone.now()
+    offset = now + timedelta(minutes=20)
+
+    # Update rides tht hve already finished
+    rides = Ride.objects.filter(arrival_date__gte=now,arrival_date__lte=offset,is_active=True)
+    rides.update(is_active=False)
