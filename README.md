@@ -14,5 +14,6 @@ Once we have them installed, we proceed to place them in the terminal
 **docker-compose -f local.yml build**
 
 **docker-compose -f local.yml up**
+
 As soon as this is done we can access the API at localhost: 8000
 
