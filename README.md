@@ -17,3 +17,6 @@ Once we have them installed, we proceed to place the next comands in the termina
 
 As soon as this is done we can access the API at localhost: 8000
 
+# Queries
+
+All available queries are found in the file ComparteRide.postman_collection.json which we must import from postman
